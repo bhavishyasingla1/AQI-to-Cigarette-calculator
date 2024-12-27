@@ -28,10 +28,20 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            max-width: 800px;
             width: 100%;
             text-align: center;
             backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
         }
 
         h1 {
@@ -138,7 +148,9 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
+                flex-direction: column;
                 padding: 20px;
+                max-width: 400px;
             }
 
             h1 {
@@ -152,7 +164,9 @@
 
         @media (max-width: 480px) {
             .container {
+                flex-direction: column;
                 padding: 15px;
+                max-width: 100%;
             }
 
             h1 {
@@ -167,12 +181,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>AQI to Cigarette Equivalent</h1>
-        <label for="aqi">AQI (Air Quality Index):</label>
-        <input type="number" id="aqi" placeholder="Enter AQI value (e.g., 200)">
-        <label for="hours">Hours Exposed:</label>
-        <input type="number" id="hours" placeholder="Enter hours exposed (e.g., 24)">
-        <button onclick="calculateCigarettes()">Calculate</button>
+        <div class="inputs">
+            <h1>AQI to Cigarette Equivalent</h1>
+            <label for="aqi">AQI (Air Quality Index):</label>
+            <input type="number" id="aqi" placeholder="Enter AQI value (e.g., 200)">
+            <label for="hours">Hours Exposed:</label>
+            <input type="number" id="hours" placeholder="Enter hours exposed (e.g., 24)">
+            <button onclick="calculateCigarettes()">Calculate</button>
+        </div>
         <div id="output" class="output"></div>
     </div>
 
