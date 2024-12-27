@@ -41,6 +41,8 @@ To run the tool locally, follow these steps:
    cd AQI-to-Cigarette-Calculator
    
 3. Open the `index.html` file in your web browser.
+   
+   Alternatively, you can use GitHub Pages to host this project online.
 
 ## Contributing
 
