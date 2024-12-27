@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern AQI to Cigarette Calculator</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #dddddd;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            font-size: 18px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        .output {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .rating {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .good {
+            background-color: #4CAF50;
+        }
+
+        .moderate {
+            background-color: #FFEB3B;
+            color: #333;
+        }
+
+        .unhealthy {
+            background-color: #FF9800;
+        }
+
+        .very-unhealthy {
+            background-color: #FF5722;
+        }
+
+        .hazardous {
+            background-color: #B71C1C;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ddd;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #ff7e5f;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AQI to Cigarette Equivalent</h1>
+        <label for="aqi">AQI (Air Quality Index):</label>
+        <input type="number" id="aqi" placeholder="Enter AQI value (e.g., 200)">
+        <label for="hours">Hours Exposed:</label>
+        <input type="number" id="hours" placeholder="Enter hours exposed (e.g., 24)">
+        <button onclick="calculateCigarettes()">Calculate</button>
+        <div id="output" class="output"></div>
+    </div>
+
+    <div class="footer">
+        <p>This tool uses the formula to calculate PM2.5 concentration based on AQI. The number of cigarettes smoked is derived using the assumption that <strong>22 µg/m³ of PM2.5 over 24 hours equals smoking one cigarette.</strong></p>
+        <p>Inspired by <a href="https://jasminedevv.github.io/AQI2cigarettes/" target="_blank">Jasminedevv's calculator</a>.</p>
+        <p>For questions or feedback, contact me on <a href="https://github.com/bhavishyasingla1" target="_blank">GitHub</a>.</p>
+    </div>
+
+    <script>
+        function calculateCigarettes() {
+            const aqiInput = document.getElementById("aqi");
+            const hoursInput = document.getElementById("hours");
+            const output = document.getElementById("output");
+
+            const aqi = parseFloat(aqiInput.value);
+            const hours = parseFloat(hoursInput.value);
+
+            // Validate input
+            if (isNaN(aqi) || isNaN(hours) || aqi <= 0 || hours <= 0) {
+                output.innerHTML = '<span style="color: #ff4d4d;">Please enter valid positive numbers for AQI and hours.</span>';
+                return;
+            }
+
+            // Convert AQI to PM2.5 concentration (EPA formula)
+            let pm25;
+            if (aqi <= 50) {
+                pm25 = (aqi / 50) * 12;
+            } else if (aqi <= 100) {
+                pm25 = 12 + ((aqi - 50) / 50) * 23.9;
+            } else if (aqi <= 150) {
+                pm25 = 35.5 + ((aqi - 100) / 50) * 54.4;
+            } else if (aqi <= 200) {
+                pm25 = 55.5 + ((aqi - 150) / 50) * 84.9;
+            } else if (aqi <= 300) {
+                pm25 = 150.5 + ((aqi - 200) / 100) * 149.9;
+            } else {
+                pm25 = 250.5 + ((aqi - 300) / 100) * 349.9;
+            }
+
+            // Calculate cigarette equivalent
+            const cigarettes = ((pm25 / 22) * (hours / 24)).toFixed(2);
+
+            // Determine AQI category
+            let category = '';
+            let categoryClass = '';
+            if (aqi <= 50) {
+                category = 'Good';
+                categoryClass = 'good';
+            } else if (aqi <= 100) {
+                category = 'Moderate';
+                categoryClass = 'moderate';
+            } else if (aqi <= 150) {
+                category = 'Unhealthy for Sensitive Groups';
+                categoryClass = 'unhealthy';
+            } else if (aqi <= 200) {
+                category = 'Unhealthy';
+                categoryClass = 'very-unhealthy';
+            } else {
+                category = 'Hazardous';
+                categoryClass = 'hazardous';
+            }
+
+            // Display results
+            output.innerHTML = `
+                It's like you've smoked <strong>${cigarettes}</strong> cigarette(s) during this exposure.
+                <div class="rating ${categoryClass}">${category}</div>
+            `;
+        }
+    </script>
+</body>
+</html>
