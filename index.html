@@ -3,79 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern AQI to Cigarette Calculator</title>
+    <title>AQI to Cigarette Equivalent Calculator</title>
     <style>
-        /* General Reset */
-        * {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #72c2ff, #6a99ff);
+            color: #333;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            height: 100vh;
+            flex-direction: column;
         }
-
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            max-width: 800px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
             width: 100%;
             text-align: center;
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .inputs {
-            display: flex;
-            flex-direction: column;
-            width: 50%;
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-
         h1 {
             font-size: 28px;
-            color: #ffffff;
+            color: #444;
             margin-bottom: 20px;
-            letter-spacing: 1px;
+            font-weight: 600;
         }
-
         label {
             display: block;
             font-size: 16px;
+            font-weight: 500;
             margin: 10px 0 5px;
-            text-align: left;
+            color: #555;
         }
-
         input {
             width: 100%;
             padding: 12px;
-            margin: 5px 0 15px;
-            font-size: 16px;
-            border: none;
+            margin: 10px 0 20px;
+            font-size: 18px;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
+            box-sizing: border-box;
             outline: none;
+            transition: border-color 0.3s ease;
         }
-
-        input::placeholder {
-            color: #dddddd;
+        input:focus {
+            border-color: #007BFF;
         }
-
         button {
-            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            background-color: #007BFF;
             color: white;
             font-size: 18px;
             padding: 12px;
@@ -84,111 +68,74 @@
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
         }
-
         button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+            background-color: #0056b3;
         }
-
         .output {
             margin-top: 20px;
             font-size: 20px;
             font-weight: bold;
-            line-height: 1.6;
+            color: #444;
         }
-
+        .error {
+            color: #ff4d4d;
+            font-size: 16px;
+        }
         .rating {
             font-size: 18px;
-            font-weight: bold;
-            padding: 12px;
+            font-weight: 600;
+            padding: 10px;
             margin-top: 15px;
-            border-radius: 10px;
-            display: inline-block;
+            border-radius: 8px;
+            text-transform: capitalize;
         }
-
         .good {
             background-color: #4CAF50;
+            color: white;
         }
-
         .moderate {
             background-color: #FFEB3B;
-            color: #333;
+            color: black;
         }
-
         .unhealthy {
             background-color: #FF9800;
+            color: white;
         }
-
         .very-unhealthy {
             background-color: #FF5722;
+            color: white;
         }
-
         .hazardous {
             background-color: #B71C1C;
+            color: white;
         }
-
         .footer {
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
-            color: #ddd;
             text-align: center;
+            color: #555;
         }
-
         .footer a {
-            color: #ff7e5f;
+            color: #007BFF;
             text-decoration: none;
+            font-weight: 500;
         }
-
         .footer a:hover {
             text-decoration: underline;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                padding: 20px;
-                max-width: 400px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            button {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                flex-direction: column;
-                padding: 15px;
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
-
-            button {
-                font-size: 14px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="inputs">
-            <h1>AQI to Cigarette Equivalent</h1>
-            <label for="aqi">AQI (Air Quality Index):</label>
-            <input type="number" id="aqi" placeholder="Enter AQI value (e.g., 200)">
-            <label for="hours">Hours Exposed:</label>
-            <input type="number" id="hours" placeholder="Enter hours exposed (e.g., 24)">
-            <button onclick="calculateCigarettes()">Calculate</button>
-        </div>
+        <h1>AQI to Cigarette Equivalent</h1>
+        <label for="aqi">AQI (Air Quality Index):</label>
+        <input type="number" id="aqi" placeholder="Enter AQI value (e.g., 200)">
+        <label for="hours">Hours Exposed:</label>
+        <input type="number" id="hours" placeholder="Enter hours exposed (e.g., 24)">
+        <button onclick="calculateCigarettes()">Calculate</button>
         <div id="output" class="output"></div>
     </div>
 
@@ -209,11 +156,11 @@
 
             // Validate input
             if (isNaN(aqi) || isNaN(hours) || aqi <= 0 || hours <= 0) {
-                output.innerHTML = '<span style="color: #ff4d4d;">Please enter valid positive numbers for AQI and hours.</span>';
+                output.innerHTML = '<span class="error">Please enter valid positive numbers for AQI and hours.</span>';
                 return;
             }
 
-            // Convert AQI to PM2.5 concentration (EPA formula)
+            // Step 1: Convert AQI to PM2.5 concentration (EPA formula)
             let pm25;
             if (aqi <= 50) {
                 pm25 = (aqi / 50) * 12;
@@ -229,10 +176,10 @@
                 pm25 = 250.5 + ((aqi - 300) / 100) * 349.9;
             }
 
-            // Calculate cigarette equivalent
+            // Step 2: Calculate cigarette equivalent
             const cigarettes = ((pm25 / 22) * (hours / 24)).toFixed(2);
 
-            // Determine AQI category
+            // Step 3: Determine AQI category
             let category = '';
             let categoryClass = '';
             if (aqi <= 50) {
@@ -252,9 +199,8 @@
                 categoryClass = 'hazardous';
             }
 
-            // Display results
-            output.innerHTML = `
-                It's like you've smoked <strong>${cigarettes}</strong> cigarette(s) during this exposure.
+            // Step 4: Display results
+            output.innerHTML = `It's like you've smoked <strong>${cigarettes}</strong> cigarette(s) during this exposure.
                 <div class="rating ${categoryClass}">${category}</div>
             `;
         }
